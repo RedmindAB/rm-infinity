@@ -1,0 +1,48 @@
+{
+  "name": "@redmind/infinity",
+  "version": "0.0.1",
+  "description": "Sorted data from multiple data sources",
+  "main": "lib/index.js",
+  "types": "lib/types.d.ts",
+  "scripts": {
+    "test": "jest --config jestconfig.json",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RedmindAB/rm-infinity.git"
+  },
+  "keywords": [
+    "infinity",
+    "infinityscroll",
+    "redmind",
+    "scroll",
+    "multiple",
+    "datasource"
+  ],
+  "author": "Gurey",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RedmindAB/rm-infinity/issues"
+  },
+  "homepage": "https://github.com/RedmindAB/rm-infinity#readme",
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "jest": "^25.5.2",
+    "prettier": "^2.0.5",
+    "ts-jest": "^25.4.0",
+    "tslint": "^6.1.2",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.8.3"
+  }
+}
