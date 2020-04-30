@@ -33,11 +33,11 @@ const cats: Cat[] = [
 
 const dogs: Dog[] = [
   {
-    birthDate: '2019-01-01',
+    birthDate: '2012-01-01',
     name: 'Shadow',
   },
   {
-    birthDate: '2015-05-21',
+    birthDate: '2013-05-21',
     name: 'Lucky',
   },
   {
@@ -45,31 +45,31 @@ const dogs: Dog[] = [
     name: 'Sam',
   },
   {
-    birthDate: '2013-01-01',
+    birthDate: '2015-01-01',
     name: 'Buddy',
   },
   {
-    birthDate: '2012-01-01',
+    birthDate: '2019-01-01',
     name: 'Molly',
   },
 ];
 
 describe('examples', () => {
   test('Basic', async () => {
-    const Engine = new InfinityEngine();
+    const Engine = new InfinityEngine({ ascending: true });
 
     const config = [
       {
         name: 'cats',
         offset: 0,
         query: (offset) => Promise.resolve(cats.slice(offset, 3 + offset)),
-        sortOn: (cat) => moment().subtract(cat.age, 'years').milliseconds(),
+        sortOn: (cat) => moment().subtract(cat.age, 'years').unix(),
       } as InfinityConfig<Cat>,
       {
         name: 'dogs',
         offset: 0,
         query: (offset) => Promise.resolve(dogs.slice(offset, 2 + offset)),
-        sortOn: (dog) => moment(dog.birthDate).milliseconds(),
+        sortOn: (dog) => moment(dog.birthDate).unix(),
       } as InfinityConfig<Dog>,
     ];
     let result = await Engine.getNext(config);
