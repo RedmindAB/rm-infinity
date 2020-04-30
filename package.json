@@ -1,5 +1,5 @@
 {
-  "name": "@redmind/infinity",
+  "name": "rm-infinity",
   "version": "0.0.1",
   "description": "Sorted data from multiple data sources",
   "main": "lib/index.js",
