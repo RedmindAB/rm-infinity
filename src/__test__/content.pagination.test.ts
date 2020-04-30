@@ -1,8 +1,8 @@
 import * as pag from '../paginationEngine';
-import { PaginationConfig, OffsetResult } from '../types';
+import { InfinityConfig, OffsetResult } from '../types';
 
-const ascpagination = new pag.PaginationEngine({ ascending: true });
-const descpagination = new pag.PaginationEngine({ ascending: false });
+const ascpagination = new pag.InfinityEngine({ ascending: true });
+const descpagination = new pag.InfinityEngine({ ascending: false });
 
 describe('content pagination', () => {
   describe('ascending', () => {
@@ -33,8 +33,8 @@ describe('content pagination', () => {
         database2 = [1, 3, 6, 9];
       });
 
-      const db1Config = (offset: number): PaginationConfig<number> => createConfig('db1', offset, database1);
-      const db2Config = (offset: number): PaginationConfig<number> => createConfig('db2', offset, database2);
+      const db1Config = (offset: number): InfinityConfig<number> => createConfig('db1', offset, database1);
+      const db2Config = (offset: number): InfinityConfig<number> => createConfig('db2', offset, database2);
       test('should return a offset result', async () => {
         const result = await ascpagination.getNext([db1Config(0), db2Config(0)]);
         expect(result.newOffsets).toEqual([
@@ -80,14 +80,14 @@ describe('content pagination', () => {
         allResults.sort((o1, o2) => o1 - o2).reverse();
       });
 
-      const db1Config = (offset: number): PaginationConfig<number> => ({
+      const db1Config = (offset: number): InfinityConfig<number> => ({
         name: 'db1',
         offset: offset,
         // We only select the first 5 for each run
         query: (o) => Promise.resolve(database1.slice(o, o + 5)),
         sortOn: (v) => v,
       });
-      const db2Config = (offset: number): PaginationConfig<number> => ({
+      const db2Config = (offset: number): InfinityConfig<number> => ({
         name: 'db2',
         offset: offset,
         // We only select the first 5 for each run
@@ -136,9 +136,9 @@ describe('content pagination', () => {
       const allNumbers = [...db1, ...db2, ...db3];
 
       const allNumbersSorted = allNumbers.sort((a, b) => a - b);
-      const engine = new pag.PaginationEngine({ ascending: true });
+      const engine = new pag.InfinityEngine({ ascending: true });
       test('should get next when applied', async () => {
-        const next = engine.createMomoizedNext([
+        const next = engine.createNextFn([
           createConfig('db1', 0, db1),
           createConfig('db2', 0, db2),
           createConfig('db3', 0, db3),
@@ -158,9 +158,9 @@ describe('content pagination', () => {
       const allNumbers = [...db1, ...db2, ...db3];
 
       const allNumbersSorted = allNumbers.sort((a, b) => b - a);
-      const engine = new pag.PaginationEngine({ ascending: false });
+      const engine = new pag.InfinityEngine({ ascending: false });
       test('should get next when applied', async () => {
-        const next = engine.createMomoizedNext([
+        const next = engine.createNextFn([
           createConfig('db1', 0, db1),
           createConfig('db2', 0, db2),
           createConfig('db3', 0, db3),
@@ -187,9 +187,9 @@ describe('content pagination', () => {
       ];
       const comparator = (a: any, b: any) => a - b;
       const sorted = [...db1.map((val) => val.value), ...db2.map((val) => val.nested.value)].sort(comparator);
-      const engine = new pag.PaginationEngine({ ascending: true });
+      const engine = new pag.InfinityEngine({ ascending: true });
       test('Should handle complex types', async () => {
-        const next = engine.createMomoizedNext([
+        const next = engine.createNextFn([
           createConfigComplex('db1', 0, db1, (value) => value.value, 2),
           createConfigComplex('db2', 0, db2, (value) => value.nested.value, 2),
         ]);
@@ -212,9 +212,9 @@ describe('content pagination', () => {
       ];
       const comparator = (a: any, b: any) => a - b;
       const sorted = [...db1.map((val) => val.value), ...db2.map((val) => val.nested.value)].sort(comparator).reverse();
-      const engine = new pag.PaginationEngine({ ascending: false });
+      const engine = new pag.InfinityEngine({ ascending: false });
       test('Should handle complex types', async () => {
-        const next = engine.createMomoizedNext([
+        const next = engine.createNextFn([
           createConfigComplex('db1', 0, db1, (value) => value.value, 2),
           createConfigComplex('db2', 0, db2, (value) => value.nested.value, 2),
         ]);
@@ -229,7 +229,7 @@ describe('content pagination', () => {
   });
 });
 
-function createConfig(name: string, offset: number, database1: number[], limit: number = 5): PaginationConfig<number> {
+function createConfig(name: string, offset: number, database1: number[], limit: number = 5): InfinityConfig<number> {
   return {
     name,
     offset,
@@ -244,7 +244,7 @@ function createConfigComplex<T>(
   database1: T[],
   sortOn: (value: T) => number,
   limit: number = 5,
-): PaginationConfig<T> {
+): InfinityConfig<T> {
   return {
     name,
     offset,
@@ -253,7 +253,7 @@ function createConfigComplex<T>(
   };
 }
 
-function simpleConfig(numbers: number[]): PaginationConfig<number> {
+function simpleConfig(numbers: number[]): InfinityConfig<number> {
   return {
     name: Date.now().toString(),
     offset: 0,

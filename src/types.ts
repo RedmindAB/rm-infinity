@@ -1,11 +1,11 @@
-export type PaginationConfig<T> = {
+export type InfinityConfig<T> = {
   name: string;
   offset: number;
   query: (offset: number) => Promise<T[]>;
   sortOn: (value: T) => number;
 };
 
-export type PaginationResult = {
+export type InfinityResult = {
   data: any[];
   newOffsets: OffsetResult[];
 };
@@ -15,11 +15,11 @@ export type OffsetResult = {
   value: number;
 };
 
-export type PaginationEngineConfig = {
+export type InfinityEngineConfig = {
   ascending?: boolean;
 };
 
 export type _DataResult = {
-  config: PaginationConfig<any>;
+  config: InfinityConfig<any>;
   data: any[];
 };

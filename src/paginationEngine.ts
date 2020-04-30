@@ -1,15 +1,15 @@
-import { PaginationEngineConfig, PaginationConfig, PaginationResult, OffsetResult, _DataResult } from './types';
+import { InfinityEngineConfig, InfinityConfig, InfinityResult, OffsetResult, _DataResult } from './types';
 import { getMin, getMax } from './minmax';
 
-const DEFAULT_CONFIG: PaginationEngineConfig = { ascending: false };
+const DEFAULT_CONFIG: InfinityEngineConfig = { ascending: false };
 
-export class PaginationEngine {
-  private config: PaginationEngineConfig;
-  constructor(config?: PaginationEngineConfig) {
+export class InfinityEngine {
+  private config: InfinityEngineConfig;
+  constructor(config?: InfinityEngineConfig) {
     this.config = { ...DEFAULT_CONFIG, ...config };
   }
 
-  async getNext(configs: PaginationConfig<any>[]): Promise<PaginationResult> {
+  async getNext(configs: InfinityConfig<any>[]): Promise<InfinityResult> {
     const queries = configs.map((config) =>
       config.query(config.offset).then((data) => ({ config, data } as _DataResult)),
     );
@@ -42,14 +42,19 @@ export class PaginationEngine {
     };
   }
 
-  createMomoizedNext(configs: PaginationConfig<any>[]) {
+  createNextFn(configs: InfinityConfig<any>[]) {
     const nextConfigs = configs;
     return async () => {
       const result = await this.getNext(nextConfigs);
-      result.newOffsets.forEach(
-        (offset) => (nextConfigs.find((oldConfig) => oldConfig.name === offset.name)!.offset = offset.value),
-      );
+      this.updateConfigsOffsetFromResult(result, nextConfigs);
       return result;
     };
+  }
+
+  updateConfigsOffsetFromResult(result: InfinityResult, config: InfinityConfig<any>[]) {
+    result.newOffsets.forEach(
+      (offset) => (config.find((oldConfig) => oldConfig.name === offset.name)!.offset = offset.value),
+    );
+    return config;
   }
 }
