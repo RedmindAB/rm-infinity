@@ -1,7 +1,7 @@
 import * as minmax from '../minmax';
-import { PaginationConfig } from '../types';
+import { InfinityConfig } from '../types';
 
-const config: PaginationConfig<number> = {
+const config: InfinityConfig<number> = {
   name: 'hej',
   offset: 0,
   query: () => Promise.resolve([0]),
