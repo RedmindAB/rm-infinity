@@ -1,7 +1,8 @@
 import { InfinityEngineConfig, InfinityConfig, InfinityResult, OffsetResult, _DataResult } from './types';
 import { getMin, getMax } from './minmax';
+import { validateData } from './validation';
 
-const DEFAULT_CONFIG: InfinityEngineConfig = { ascending: false };
+const DEFAULT_CONFIG: InfinityEngineConfig = { ascending: false, onError: console.warn, logErrors: true };
 
 export class InfinityEngine {
   private config: InfinityEngineConfig;
@@ -18,12 +19,18 @@ export class InfinityEngine {
     const max = getMax(fetchedQueries, this.config.ascending!);
     const returnObjects = [];
     const newOffsets: OffsetResult[] = [];
+    fetchedQueries.forEach((res) => {
+      const error = validateData(res, this.config);
+      if (error && this.config.logErrors) {
+        this.config.onError!(error);
+      }
+    });
     for (const fetchedQuery of fetchedQueries) {
       let offsetAddition = 0;
       for (const queryData of fetchedQuery.data) {
-        if (fetchedQuery.config.sortOn(queryData) <= max && fetchedQuery.config.sortOn(queryData) >= min) {
+        if (fetchedQuery.config.comparator(queryData) <= max && fetchedQuery.config.comparator(queryData) >= min) {
           returnObjects.push({
-            sortValue: fetchedQuery.config.sortOn(queryData),
+            sortValue: fetchedQuery.config.comparator(queryData),
             data: queryData,
           });
           offsetAddition++;
@@ -43,18 +50,18 @@ export class InfinityEngine {
   }
 
   createNextFn(configs: InfinityConfig<any>[]) {
-    const nextConfigs = configs;
+    let nextConfigs = configs;
     return async () => {
       const result = await this.getNext(nextConfigs);
-      this.updateConfigsOffsetFromResult(result, nextConfigs);
+      nextConfigs = this.updateConfigsOffsetFromResult(result, nextConfigs);
       return result;
     };
   }
 
   updateConfigsOffsetFromResult(result: InfinityResult, config: InfinityConfig<any>[]) {
-    result.newOffsets.forEach(
-      (offset) => (config.find((oldConfig) => oldConfig.name === offset.name)!.offset = offset.value),
-    );
-    return config;
+    return result.newOffsets.map((offset) => {
+      const oldCOnfig = config.find((oldConfig) => oldConfig.name === offset.name);
+      return { ...oldCOnfig!, offset: offset.value };
+    });
   }
 }

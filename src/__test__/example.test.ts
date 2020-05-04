@@ -58,32 +58,32 @@ describe('examples', () => {
   test('Basic', async () => {
     const Engine = new InfinityEngine({ ascending: true });
 
-    const config = [
+    let config = [
       {
         name: 'cats',
         offset: 0,
         query: (offset) => Promise.resolve(cats.slice(offset, 3 + offset)),
-        sortOn: (cat) => moment().subtract(cat.age, 'years').unix(),
+        comparator: (cat) => moment().subtract(cat.age, 'years').unix(),
       } as InfinityConfig<Cat>,
       {
         name: 'dogs',
         offset: 0,
         query: (offset) => Promise.resolve(dogs.slice(offset, 2 + offset)),
-        sortOn: (dog) => moment(dog.birthDate).unix(),
+        comparator: (dog) => moment(dog.birthDate).unix(),
       } as InfinityConfig<Dog>,
     ];
     let result = await Engine.getNext(config);
     console.log(result);
-    Engine.updateConfigsOffsetFromResult(result, config);
+    config = Engine.updateConfigsOffsetFromResult(result, config);
     result = await Engine.getNext(config);
     console.log(result);
-    Engine.updateConfigsOffsetFromResult(result, config);
+    config = Engine.updateConfigsOffsetFromResult(result, config);
     result = await Engine.getNext(config);
     console.log(result);
-    Engine.updateConfigsOffsetFromResult(result, config);
+    config = Engine.updateConfigsOffsetFromResult(result, config);
     result = await Engine.getNext(config);
     console.log(result);
-    Engine.updateConfigsOffsetFromResult(result, config);
+    config = Engine.updateConfigsOffsetFromResult(result, config);
     result = await Engine.getNext(config);
     console.log(result);
   });
