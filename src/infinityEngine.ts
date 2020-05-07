@@ -2,6 +2,7 @@ import { InfinityEngineConfig, InfinityConfig, InfinityResult, OffsetResult, _Da
 import { getMin, getMax } from './minmax';
 import { validateData } from './validation';
 
+// tslint:disable-next-line: no-console
 const DEFAULT_CONFIG: InfinityEngineConfig = { ascending: false, onError: console.warn, logErrors: true };
 
 export class InfinityEngine {
@@ -15,14 +16,14 @@ export class InfinityEngine {
       config.query(config.offset).then((data) => ({ config, data } as _DataResult)),
     );
     const fetchedQueries = await Promise.all(queries);
-    const min = getMin(fetchedQueries, this.config.ascending!);
-    const max = getMax(fetchedQueries, this.config.ascending!);
+    const min = getMin(fetchedQueries, this.config.ascending);
+    const max = getMax(fetchedQueries, this.config.ascending);
     const returnObjects = [];
     const newOffsets: OffsetResult[] = [];
     fetchedQueries.forEach((res) => {
       const error = validateData(res, this.config);
       if (error && this.config.logErrors) {
-        this.config.onError!(error);
+        this.config.onError(error);
       }
     });
     for (const fetchedQuery of fetchedQueries) {
