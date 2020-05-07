@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "rm-infinity": "0.0.2"
+    "rm-infinity": "latest"
   }
 }
