@@ -1,4 +1,4 @@
-![Node.js CI](https://github.com/RedmindAB/rm-infinity/workflows/Node.js%20CI/badge.svg?branch=master)
+![Node.js CI](https://github.com/RedmindAB/rm-infinity/workflows/Node.js%20CI/badge.svg?branch=master) [![Coverage Status](https://coveralls.io/repos/github/RedmindAB/rm-infinity/badge.svg?branch=master)](https://coveralls.io/github/RedmindAB/rm-infinity?branch=master)
 
 # rm-infinity
 
