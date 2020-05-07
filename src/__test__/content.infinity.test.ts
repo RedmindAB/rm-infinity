@@ -5,6 +5,16 @@ const ascpagination = new pag.InfinityEngine({ ascending: true, logErrors: false
 const descpagination = new pag.InfinityEngine({ ascending: false, logErrors: false });
 
 describe('content pagination', () => {
+  describe('smoke test', () => {
+    test('smokie', async () => {
+      const engine = new pag.InfinityEngine();
+      const res = await engine.getNext([
+        { comparator: (num) => num, name: 'smoke', offset: 0, query: () => Promise.resolve([0]) },
+      ]);
+      expect(res.data).toEqual([0]);
+    });
+  });
+
   describe('ascending', () => {
     describe('basic intersection tests', () => {
       test('Framed Intersection of [0, 3] & [2, 4] is [0, 2, 3]', async () => {
@@ -59,9 +69,9 @@ describe('content pagination', () => {
         const result = await descpagination.getNext([simpleConfig([3, 0]), simpleConfig([4, 2])]);
         expect(result.data).toEqual([4, 3, 2]);
       });
-      test('Framed Intersection of [34, -1] & [4, 0] is [34, 4]', async () => {
+      test('Framed Intersection of [34, -1] & [4, 0] is [34, 4, 0]', async () => {
         const result = await descpagination.getNext([simpleConfig([34, -1]), simpleConfig([4, 0])]);
-        expect(result.data).toEqual([34, 4]);
+        expect(result.data).toEqual([34, 4, 0]);
       });
       test('Framed Intersection of [3, 0] & [4, 4] is [4, 4]', async () => {
         const result = await descpagination.getNext([simpleConfig([3, 0]), simpleConfig([4, 4])]);

@@ -150,6 +150,21 @@ describe('min/max', () => {
         );
         expect(res).toBe(6);
       });
+
+      test('should handle one descending array with 1', () => {
+        const res = minmax.getMax([{ config, data: [1] }], false);
+        expect(res).toBe(1);
+      });
+
+      test('should handle one descending array with 0', () => {
+        const res = minmax.getMax([{ config, data: [0] }], false);
+        expect(res).toBe(0);
+      });
+
+      test('should handle one descending array with -1', () => {
+        const res = minmax.getMax([{ config, data: [-1] }], false);
+        expect(res).toBe(-1);
+      });
     });
   });
 });
