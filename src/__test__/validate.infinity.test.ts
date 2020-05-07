@@ -20,7 +20,21 @@ describe('validation', () => {
     test('invalid sort order', async () => {
       await ascpagination.getNext([simpleConfig('asc', [3, 2, 1])]);
       expect(error).toEqual(
-        validation.getErrorMessage(ValidationError.INVALID_ORDER, { config: { name: 'asc' } } as any, ascConfig),
+        validation.getErrorMessage(
+          ValidationError.INVALID_ORDER,
+          { config: { name: 'asc' } } as any,
+          ascpagination.getConfig(),
+        ),
+      );
+    });
+    test('invalid sort order one of two', async () => {
+      await ascpagination.getNext([simpleConfig('asc', [3, 2, 1]), simpleConfig('asc2', [1, 2, 3])]);
+      expect(error).toEqual(
+        validation.getErrorMessage(
+          ValidationError.INVALID_ORDER,
+          { config: { name: 'asc' } } as any,
+          ascpagination.getConfig(),
+        ),
       );
     });
     test('valid sort order', async () => {
@@ -37,7 +51,21 @@ describe('validation', () => {
     test('invalid sort order', async () => {
       await descpagination.getNext([simpleConfig('desc', [1, 2, 3])]);
       expect(error).toEqual(
-        validation.getErrorMessage(ValidationError.INVALID_ORDER, { config: { name: 'desc' } } as any, descConfig),
+        validation.getErrorMessage(
+          ValidationError.INVALID_ORDER,
+          { config: { name: 'desc' } } as any,
+          descpagination.getConfig(),
+        ),
+      );
+    });
+    test('invalid sort order one of two', async () => {
+      await descpagination.getNext([simpleConfig('desc', [3, 2, 1]), simpleConfig('desc2', [1, 2, 3])]);
+      expect(error).toEqual(
+        validation.getErrorMessage(
+          ValidationError.INVALID_ORDER,
+          { config: { name: 'desc2' } } as any,
+          descpagination.getConfig(),
+        ),
       );
     });
     test('valid sort order', async () => {

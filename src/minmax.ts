@@ -1,3 +1,4 @@
+/** @ignore */ /** */
 import { _DataResult } from './types';
 
 export function getMin(data: _DataResult[], ascending: boolean) {

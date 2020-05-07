@@ -6,7 +6,7 @@ const DEFAULT_CONFIG: InfinityEngineConfig = { ascending: false, onError: consol
 
 export class InfinityEngine {
   private config: InfinityEngineConfig;
-  constructor(config?: InfinityEngineConfig) {
+  constructor(config: Partial<InfinityEngineConfig> = {}) {
     this.config = { ...DEFAULT_CONFIG, ...config };
   }
 
@@ -63,5 +63,9 @@ export class InfinityEngine {
       const oldCOnfig = config.find((oldConfig) => oldConfig.name === offset.name);
       return { ...oldCOnfig!, offset: offset.value };
     });
+  }
+
+  getConfig() {
+    return this.config;
   }
 }

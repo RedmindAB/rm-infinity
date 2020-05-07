@@ -1,3 +1,4 @@
+/** @ignore */ /** */
 import { _DataResult, InfinityEngineConfig, ValidationError } from './types';
 
 export const getErrorMessage = (error: ValidationError, result: _DataResult, config: InfinityEngineConfig) => {

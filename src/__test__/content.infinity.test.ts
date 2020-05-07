@@ -51,6 +51,10 @@ describe('content pagination', () => {
 
   describe('descending', () => {
     describe('basic intersection tests', () => {
+      test('descending config by default', async () => {
+        const result = await new pag.InfinityEngine().getNext([simpleConfig([3, 0]), simpleConfig([4, 2])]);
+        expect(result.data).toEqual([4, 3, 2]);
+      });
       test('Framed Intersection of [3, 0] & [4, 2] is [4, 3, 2]', async () => {
         const result = await descpagination.getNext([simpleConfig([3, 0]), simpleConfig([4, 2])]);
         expect(result.data).toEqual([4, 3, 2]);

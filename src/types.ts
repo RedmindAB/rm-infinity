@@ -16,11 +16,12 @@ export type OffsetResult = {
 };
 
 export type InfinityEngineConfig = {
-  ascending?: boolean;
-  onError?: (msg: ValidationErrorMessage) => void;
-  logErrors?: boolean;
+  ascending: boolean;
+  onError: (msg: ValidationErrorMessage) => void;
+  logErrors: boolean;
 };
 
+/** @ignore */
 export type _DataResult = {
   config: InfinityConfig<any>;
   data: any[];
