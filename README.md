@@ -6,6 +6,14 @@ Get combined sorted data from multiple sorted data sources
 
 it works by getting data from paginated sources and work out which elements that can be combined into one single response based on where the different results intersect.
 
+# Install
+
+`npm i rm-infinity`
+
+# API docs
+
+https://redmindab.github.io/rm-infinity/
+
 # Usage
 
 Given this dataset
