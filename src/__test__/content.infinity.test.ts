@@ -81,6 +81,14 @@ describe('content pagination', () => {
         const result = await descpagination.getNext([simpleConfig([3, 0]), simpleConfig([4, 2]), simpleConfig([2, 1])]);
         expect(result.data).toEqual([4, 3, 2, 2]);
       });
+      test('Framed Intersection of [0, 0, -1] & [-1, -2] & [0, -1] is [0, 0, 0, -1, -1, -1]', async () => {
+        const result = await descpagination.getNext([
+          simpleConfig([0, 0, -1]),
+          simpleConfig([-1, -2]),
+          simpleConfig([0, -1]),
+        ]);
+        expect(result.data).toEqual([0, 0, 0, -1, -1, -1]);
+      });
     });
 
     describe('basic offset tests', () => {
