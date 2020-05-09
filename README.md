@@ -2,7 +2,7 @@
 
 # rm-infinity
 
-Get combined sorted data from multiple sorted data sources
+Get combined sorted data from multiple paginated data sources
 
 it works by getting data from paginated sources and work out which elements that can be combined into one single response based on where the different results intersect.
 
