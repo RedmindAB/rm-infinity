@@ -9,7 +9,7 @@ describe('content pagination', () => {
     test('smokie', async () => {
       const engine = new pag.InfinityEngine();
       const res = await engine.getNext([
-        { comparator: (num) => num, name: 'smoke', offset: 0, query: () => Promise.resolve([0]) },
+        { sortValue: (num) => num, name: 'smoke', offset: 0, query: () => Promise.resolve([0]) },
       ]);
       expect(res.data).toEqual([0]);
     });
@@ -107,14 +107,14 @@ describe('content pagination', () => {
         offset: offset,
         // We only select the first 5 for each run
         query: (o) => Promise.resolve(database1.slice(o, o + 5)),
-        comparator: (v) => v,
+        sortValue: (v) => v,
       });
       const db2Config = (offset: number): InfinityConfig<number> => ({
         name: 'db2',
         offset: offset,
         // We only select the first 5 for each run
         query: (o) => Promise.resolve(database2.slice(o, o + 5)),
-        comparator: (v) => v,
+        sortValue: (v) => v,
       });
 
       test('should return a offset result', async () => {
@@ -207,8 +207,8 @@ describe('content pagination', () => {
         { nested: { value: 30 } },
         { nested: { value: 100 } },
       ];
-      const comparator = (a: any, b: any) => a - b;
-      const sorted = [...db1.map((val) => val.value), ...db2.map((val) => val.nested.value)].sort(comparator);
+      const sortValue = (a: any, b: any) => a - b;
+      const sorted = [...db1.map((val) => val.value), ...db2.map((val) => val.nested.value)].sort(sortValue);
       const engine = new pag.InfinityEngine({ ascending: true, logErrors: false });
       test('Should handle complex types', async () => {
         const next = engine.createNextFn([
@@ -232,8 +232,8 @@ describe('content pagination', () => {
         { nested: { value: 6 } },
         { nested: { value: 3 } },
       ];
-      const comparator = (a: any, b: any) => a - b;
-      const sorted = [...db1.map((val) => val.value), ...db2.map((val) => val.nested.value)].sort(comparator).reverse();
+      const sortValue = (a: any, b: any) => a - b;
+      const sorted = [...db1.map((val) => val.value), ...db2.map((val) => val.nested.value)].sort(sortValue).reverse();
       const engine = new pag.InfinityEngine({ ascending: false, logErrors: false });
       test('Should handle complex types', async () => {
         const next = engine.createNextFn([
@@ -256,7 +256,7 @@ function createConfig(name: string, offset: number, database1: number[], limit: 
     name,
     offset,
     query: (o) => Promise.resolve(database1.slice(o, o + limit)),
-    comparator: (v) => v,
+    sortValue: (v) => v,
   };
 }
 
@@ -264,14 +264,14 @@ function createConfigComplex<T>(
   name: string,
   offset: number,
   database1: T[],
-  comparator: (value: T) => number,
+  sortValue: (value: T) => number,
   limit: number = 5,
 ): InfinityConfig<T> {
   return {
     name,
     offset,
     query: (o) => Promise.resolve(database1.slice(o, o + limit)),
-    comparator,
+    sortValue: sortValue,
   };
 }
 
@@ -280,7 +280,7 @@ function simpleConfig(numbers: number[]): InfinityConfig<number> {
     name: Date.now().toString(),
     offset: 0,
     query: () => Promise.resolve(numbers),
-    comparator: (v) => v,
+    sortValue: (v) => v,
   };
 }
 

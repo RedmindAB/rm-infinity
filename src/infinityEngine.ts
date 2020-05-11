@@ -29,7 +29,7 @@ export class InfinityEngine {
     for (const fetchedQuery of fetchedQueries) {
       let offsetAddition = 0;
       for (const queryData of fetchedQuery.data) {
-        const sortValue = fetchedQuery.config.comparator(queryData);
+        const sortValue = fetchedQuery.config.sortValue(queryData);
         if (sortValue <= max && sortValue >= min) {
           returnObjects.push({
             sortValue,

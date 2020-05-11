@@ -28,7 +28,7 @@ export const validDataOrder = (result: _DataResult, config: InfinityEngineConfig
   if (result.data.length < 2) {
     return true;
   }
-  const start = result.config.comparator(result.data[0]);
-  const end = result.config.comparator(result.data[result.data.length - 1]);
+  const start = result.config.sortValue(result.data[0]);
+  const end = result.config.sortValue(result.data[result.data.length - 1]);
   return config.ascending ? start <= end : start >= end;
 };

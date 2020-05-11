@@ -2,7 +2,7 @@ export type InfinityConfig<T> = {
   name: string;
   offset: number;
   query: (offset: number) => Promise<T[]>;
-  comparator: (value: T) => number;
+  sortValue: (value: T) => number;
 };
 
 export type InfinityResult = {

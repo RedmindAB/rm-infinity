@@ -63,13 +63,13 @@ describe('examples', () => {
         name: 'cats',
         offset: 0,
         query: (offset) => Promise.resolve(cats.slice(offset, 3 + offset)),
-        comparator: (cat) => moment().subtract(cat.age, 'years').unix(),
+        sortValue: (cat) => moment().subtract(cat.age, 'years').unix(),
       } as InfinityConfig<Cat>,
       {
         name: 'dogs',
         offset: 0,
         query: (offset) => Promise.resolve(dogs.slice(offset, 2 + offset)),
-        comparator: (dog) => moment(dog.birthDate).unix(),
+        sortValue: (dog) => moment(dog.birthDate).unix(),
       } as InfinityConfig<Dog>,
     ];
     let result = await Engine.getNext(config);

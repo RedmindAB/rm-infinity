@@ -62,7 +62,7 @@ const dogs: Dog[] = [
 ];
 ```
 
-- We want to get all the cats and dogs in a stream like manor
+- We want to get all the cats and dogs in a stream like manner
 - sorted by the age of the animal with the oldest first.
 
 to achive this with rm-infinity we just create a `InfinityEngine` with a ascending configuration (if we convert age and birthdate to unix time)
@@ -81,14 +81,14 @@ const config = [
   {
     name: 'cats',
     offset: 0, // original offset is 0
-    query: (offset) => Promise.resolve(cats.slice(offset, 3 + offset)),
-    comparator: (cat) => moment().subtract(cat.age, 'years').unix(),
+    query: (offset) => Promise.resolve(cats.slice(offset, 3 + offset)), // getting 3 results per page
+    sortValue: (cat) => moment().subtract(cat.age, 'years').unix(),
   } as InfinityConfig<Cat>,
   {
     name: 'dogs',
     offset: 0, // original offset is 0
-    query: (offset) => Promise.resolve(dogs.slice(offset, 2 + offset)),
-    comparator: (dog) => moment(dog.birthDate).unix(),
+    query: (offset) => Promise.resolve(dogs.slice(offset, 2 + offset)), // Getting 2 results per page
+    sortValue: (dog) => moment(dog.birthDate).unix(),
   } as InfinityConfig<Dog>,
 ];
 ```
