@@ -5,7 +5,6 @@ const config: InfinityConfig<number> = {
   name: 'hej',
   offset: 0,
   query: () => Promise.resolve([0]),
-
   sortValue: (value) => value,
 };
 

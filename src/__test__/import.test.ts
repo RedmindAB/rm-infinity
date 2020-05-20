@@ -5,7 +5,7 @@ describe('import and run', () => {
     const engine = new InfinityEngine();
     const res = await engine.getNext([
       {
-        comparator: (num) => num,
+        sortValue: (num) => num,
         name: 'test',
         offset: 0,
         query: (offset) => Promise.resolve([offset]),
