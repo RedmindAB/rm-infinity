@@ -92,6 +92,6 @@ function simpleConfig(name: string, numbers: number[]): InfinityConfig<number> {
     name,
     offset: 0,
     query: () => Promise.resolve(numbers),
-    comparator: (v) => v,
+    sortValue: (v: any) => v,
   };
 }
