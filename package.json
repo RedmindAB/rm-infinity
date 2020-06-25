@@ -1,7 +1,7 @@
 {
   "name": "rm-infinity",
   "version": "0.0.6",
-  "description": "Sorted data from multiple data sources",
+  "description": "Sorted data from multiple paginated sources",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
