@@ -124,7 +124,7 @@
   },
 ];</code></pre>
 				<ul>
-					<li>We want to get all the cats and dogs in a stream like manor</li>
+					<li>We want to get all the cats and dogs in a stream like manner</li>
 					<li>sorted by the age of the animal with the oldest first.</li>
 				</ul>
 				<p>to achive this with rm-infinity we just create a <code>InfinityEngine</code> with a ascending configuration (if we convert age and birthdate to unix time)</p>
@@ -137,14 +137,14 @@
   {
     name: <span class="hljs-string">'cats'</span>,
     offset: <span class="hljs-number">0</span>, <span class="hljs-comment">// original offset is 0</span>
-    query: <span class="hljs-function">(<span class="hljs-params">offset</span>) =&gt;</span> <span class="hljs-built_in">Promise</span>.resolve(cats.slice(offset, <span class="hljs-number">3</span> + offset)),
-    comparator: <span class="hljs-function">(<span class="hljs-params">cat</span>) =&gt;</span> moment().subtract(cat.age, <span class="hljs-string">'years'</span>).unix(),
+    query: <span class="hljs-function">(<span class="hljs-params">offset</span>) =&gt;</span> <span class="hljs-built_in">Promise</span>.resolve(cats.slice(offset, <span class="hljs-number">3</span> + offset)), <span class="hljs-comment">// getting 3 results per page</span>
+    sortValue: <span class="hljs-function">(<span class="hljs-params">cat</span>) =&gt;</span> moment().subtract(cat.age, <span class="hljs-string">'years'</span>).unix(),
   } <span class="hljs-keyword">as</span> InfinityConfig&lt;Cat&gt;,
   {
     name: <span class="hljs-string">'dogs'</span>,
     offset: <span class="hljs-number">0</span>, <span class="hljs-comment">// original offset is 0</span>
-    query: <span class="hljs-function">(<span class="hljs-params">offset</span>) =&gt;</span> <span class="hljs-built_in">Promise</span>.resolve(dogs.slice(offset, <span class="hljs-number">2</span> + offset)),
-    comparator: <span class="hljs-function">(<span class="hljs-params">dog</span>) =&gt;</span> moment(dog.birthDate).unix(),
+    query: <span class="hljs-function">(<span class="hljs-params">offset</span>) =&gt;</span> <span class="hljs-built_in">Promise</span>.resolve(dogs.slice(offset, <span class="hljs-number">2</span> + offset)), <span class="hljs-comment">// Getting 2 results per page</span>
+    sortValue: <span class="hljs-function">(<span class="hljs-params">dog</span>) =&gt;</span> moment(dog.birthDate).unix(),
   } <span class="hljs-keyword">as</span> InfinityConfig&lt;Dog&gt;,
 ];</code></pre>
 				<p>pass the configuration to the engine</p>
@@ -187,6 +187,9 @@
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="modules/___test___testdb_.html">&quot;__test__/testdb&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="modules/_index_.html">&quot;index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -210,6 +213,8 @@
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
 				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
