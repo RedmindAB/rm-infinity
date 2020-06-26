@@ -1,9 +1,13 @@
 export type InfinityConfig<T> = {
   name: string;
   offset: number;
-  query: (offset: number) => Promise<T[]>;
+  lastSelected?: SelectedValue;
+  query: (offset: number, lastSelected?: SelectedValue) => Promise<T[]>;
   sortValue: (value: T) => number;
+  select?: (value: T) => SelectedValue;
 };
+
+export type SelectedValue = string | number | Date;
 
 export type InfinityResult = {
   data: any[];
@@ -13,6 +17,7 @@ export type InfinityResult = {
 export type OffsetResult = {
   name: string;
   value: number;
+  lastSelected?: any;
 };
 
 export type InfinityEngineConfig = {

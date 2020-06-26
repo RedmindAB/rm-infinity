@@ -13,7 +13,7 @@ export class InfinityEngine {
 
   async getNext(configs: InfinityConfig<any>[]): Promise<InfinityResult> {
     const queries = configs.map((config) =>
-      config.query(config.offset).then((data) => ({ config, data } as _DataResult)),
+      config.query(config.offset, config.lastSelected).then((data) => ({ config, data } as _DataResult)),
     );
     const fetchedQueries = await Promise.all(queries);
     const min = getMin(fetchedQueries, this.config.ascending);
@@ -28,6 +28,7 @@ export class InfinityEngine {
     });
     for (const fetchedQuery of fetchedQueries) {
       let offsetAddition = 0;
+      let lastSelected = null;
       for (const queryData of fetchedQuery.data) {
         const sortValue = fetchedQuery.config.sortValue(queryData);
         if (sortValue <= max && sortValue >= min) {
@@ -36,12 +37,19 @@ export class InfinityEngine {
             data: queryData,
           });
           offsetAddition++;
+          if (fetchedQuery.config.select) {
+            lastSelected = fetchedQuery.config.select(queryData);
+          }
         }
       }
-      newOffsets.push({
+      const newOffset: OffsetResult = {
         name: fetchedQuery.config.name,
         value: fetchedQuery.config.offset + offsetAddition,
-      });
+      };
+      if (lastSelected) {
+        newOffset.lastSelected = lastSelected;
+      }
+      newOffsets.push(newOffset);
     }
     returnObjects.sort((o1, o2) => o2.sortValue - o1.sortValue);
     const response = returnObjects.map((returnObject) => returnObject.data);
@@ -63,7 +71,7 @@ export class InfinityEngine {
   updateConfigsOffsetFromResult(result: InfinityResult, config: InfinityConfig<any>[]) {
     return result.newOffsets.map((offset) => {
       const oldCOnfig = config.find((oldConfig) => oldConfig.name === offset.name);
-      return { ...oldCOnfig!, offset: offset.value };
+      return { ...oldCOnfig!, offset: offset.value, lastSelected: offset.lastSelected };
     });
   }
 
