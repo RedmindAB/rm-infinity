@@ -14,7 +14,7 @@
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "npm run gen:docs && git commit -am \"gen docs\" && git push && git push --tags",
-    "gen:docs": "typedoc --out docs --exclude **/*.test.ts src && cp _jekyll_config.yml docs/_config.yml"
+    "gen:docs": "typedoc --out docs --exclude src/__test__/**/* src && cp _jekyll_config.yml docs/_config.yml"
   },
   "files": [
     "lib/**/*"
