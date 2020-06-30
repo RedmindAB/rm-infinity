@@ -30,7 +30,13 @@ export class InfinityEngine {
       let offsetAddition = 0;
       let lastSelected = null;
       for (const queryData of fetchedQuery.data) {
-        const sortValue = fetchedQuery.config.sortValue(queryData);
+        const { skip, sortValue: sortFn } = fetchedQuery.config;
+        const skipThis = skip ? skip(queryData) : false;
+        if (skipThis) {
+          offsetAddition++;
+          continue;
+        }
+        const sortValue = sortFn(queryData);
         if (sortValue <= max && sortValue >= min) {
           returnObjects.push({
             sortValue,

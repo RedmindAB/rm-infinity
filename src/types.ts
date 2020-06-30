@@ -5,6 +5,7 @@ export type InfinityConfig<T> = {
   query: (offset: number, lastSelected?: SelectedValue) => Promise<T[]>;
   sortValue: (value: T) => number;
   select?: (value: T) => SelectedValue;
+  skip?: (value: T) => boolean;
 };
 
 export type SelectedValue = string | number | Date;
